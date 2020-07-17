@@ -1,0 +1,38 @@
+<h2>Create a Room!</h2>
+
+<div class="input-group flex-nowrap">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="addon-wrapping">@</span>
+  </div>
+  <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
+</div>
+
+<div class="input-group input-group-lg">
+  <div class="input-group-prepend">
+    <span class="input-group-text">Room Name</span>
+  </div>
+  <input type="text" id="inputRoomName" class="form-control" aria-label="Room Name" aria-describedby="inputGroup-sizing-lg">
+</div>
+
+<button id="createRoomButton" class="btn btn-secondary">Create</button>
+
+
+
+<script type="text/javascript">
+	
+	$('#createRoomButton').on('click', function () {
+		var roomName = $('#inputRoomName').val()
+
+		if(!roomName) alert('Please insert a name')
+		else {
+			$.ajax({
+				url: '<%= rooms_create_url %>',
+				type: 'POST',
+				data: {
+          name: roomName,
+        }
+			})
+		}
+	})
+
+</script>

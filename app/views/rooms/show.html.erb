@@ -1,0 +1,54 @@
+<h1><%= @room.name %></h1>
+
+<button type="button" class="btn btn-light">
+  <%= image_tag('key.svg') %>
+  Moderation
+</button>
+
+<div class="input-group mb-3">
+  
+  <div class="input-group-prepend">
+    <span class="input-group-text">https://www.youtube.com/watch?v=</span>
+  </div>
+  
+  <input type="text" class="form-control" id="linkToVideo" placeholder="videocode" aria-label="Link to Video">
+
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="button" id="starVideoButton">Start Video</button>
+  </div>
+
+</div>
+
+<div class="row">
+  
+  <iframe class="col-sm-8" src="https://www.youtube.com/embed/null" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+  <div class="col-sm-4">
+    
+    <div id="chatFrame"></div>
+
+    <div class="input-group mb-3">
+      <input id="messageInput" type="text" class="form-control" placeholder="Message" aria-label="Message" aria-describedby="message">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" id="buttonSendMessage">Send</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script type="text/javascript">
+  $('#buttonSendMessage').on('click', function() {
+    var textMessage = $('messageInput').val()
+
+    if(!textMessage) {
+      
+    }
+  })
+
+  $('#starVideoButton').on('click', function() {
+    var url = 'https://www.youtube.com/embed/' + $('#linkToVideo').val()
+    $('iframe').attr('src', url)
+  })
+</script>
