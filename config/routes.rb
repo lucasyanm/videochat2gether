@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :room_message_to_approves
   resources :room_messages
   
 	get '/',
@@ -16,6 +17,26 @@ Rails.application.routes.draw do
   delete '/room/:name/delete',
     to: 'rooms#delete',
     as: :rooms_delete
+
+  post '/rooom/:name/sendmessage',
+    to: 'rooms#send_message',
+    as: :rooms_send_message
+
+  delete '/room/:name/refusemessage',
+    to: 'room_message_to_approves#refuse_message',
+    as: :rooms_message_to_approves_refuse_message
+
+  post '/room/:name/approvemessage',
+    to: 'rooms#approve_message',
+    as: :rooms_approve_message
+
+  put '/room/:name/upvideo',
+    to: 'rooms#update_video',
+    as: :rooms_update_video
+
+  get '/room/:name/updata',
+    to: 'rooms#update_data',
+    as: :rooms_update_data
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

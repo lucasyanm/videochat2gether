@@ -28,7 +28,7 @@
 	display: none;
 }
 
-#moderationFrame {
+#moderateFrame {
 	border: 1px solid #ddd;
 }
 
@@ -45,4 +45,8 @@ iframe {
 #chatFrame {
 	flex: 1;
 	border: 1px solid #ddd;
+}
+
+.breakText {
+  word-break: break-all;
 }

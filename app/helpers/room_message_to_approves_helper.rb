@@ -1,0 +1,2 @@
+module RoomMessageToApprovesHelper
+end

@@ -21,18 +21,19 @@
 </div>
 
 <div class="row">
-  <div id="moderationFrame" class="hide">
+  <div id="moderateFrame" class="hide">
     <button id="deleteRoomButton" type="button" class="btn btn-danger">Delete room</button>
-    <h3>Moderation</h3>
-    <div id="messagesForApproval">
+    <h3>Moderate</h3>
+
+    <div id="messagesForApproval" class="overflow-auto">
       
     </div>
   </div>
 
   <div id="videoChatFrame" class="col-12">
-    <button id="moderationButton" type="button" class="btn btn-light">
+    <button id="moderateButton" type="button" class="btn btn-light">
       <%= image_tag('key.svg') %>
-      Moderation
+      Moderate
     </button>
 
     <div class="input-group mb-3">    
@@ -48,11 +49,13 @@
     </div>
 
     <div class="row">    
-      <iframe class="col-md-8" src="https://www.youtube.com/embed/null" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <iframe class="col-md-8" src="" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
       <div class="col-md-4" id="chatBox">
         
-        <div id="chatFrame"></div>
+        <div id="chatFrame" class="overflow-auto">
+          
+        </div>
 
         <div class="input-group mb-3">
           <input id="messageInput" type="text" class="form-control" placeholder="Message" aria-label="Message" aria-describedby="message">
@@ -67,6 +70,9 @@
 </div>
 
 <script type="text/javascript">
+  var url = 'https://www.youtube.com/embed/' + '<%= @room.videoUrl %>'
+  $('iframe').attr('src', url)
+
   var currentUsername = sessionStorage.getItem('username')
   if(currentUsername) {
     $('#fadeEffect').addClass('hide')
@@ -84,15 +90,15 @@
   })
 
 
-  $('#moderationButton').on('click', function() {
-    if($('#moderationFrame').hasClass('hide')){
-      $('#moderationFrame').addClass('col-md-3')
-      $('#moderationFrame').removeClass('hide')
+  $('#moderateButton').on('click', function() {
+    if($('#moderateFrame').hasClass('hide')){
+      $('#moderateFrame').addClass('col-md-3')
+      $('#moderateFrame').removeClass('hide')
       $('#videoChatFrame').addClass('col-md-9')
       $('#videoChatFrame').removeClass('col-12')
     } else {
-      $('#moderationFrame').removeClass('col-md-3')
-      $('#moderationFrame').addClass('hide')
+      $('#moderateFrame').removeClass('col-md-3')
+      $('#moderateFrame').addClass('hide')
       $('#videoChatFrame').removeClass('col-md-9')
       $('#videoChatFrame').addClass('col-12')
     }
@@ -120,15 +126,81 @@
 
 
   $('#buttonSendMessage').on('click', function() {
-    var textMessage = $('messageInput').val()
+    var textMessage = $('#messageInput').val()
 
-    if(!textMessage) {
-
+    if(textMessage) {
+      $.ajax({
+        url: '<%= rooms_send_message_url %>',
+        type: 'POST',
+        data: {
+          id: '<%= @room.id %>',
+          user: sessionStorage.getItem('username'),
+          message: textMessage
+        },
+        success: function(messageToApprove) {
+          $('#messagesForApproval').append(
+            `<div class='row' id='${messageToApprove.id}'>
+              <div class='col-md-8 breakText'> 
+                <b>${messageToApprove.user}:</b> ${messageToApprove.message} 
+              </div>
+              <div class='col-md-4'>
+                <button type="button" class="btn btn-success approveMessage"><%= image_tag('send.svg') %> </button>
+                <button type="button" class="btn btn-danger deleteMessage"><%= image_tag('x.svg') %></button>
+              </div>
+            </div>`
+            )
+        }
+      })
     }
   })
 
+  $('#messagesForApproval').on('click','button.deleteMessage', function() {
+    var messageDiv = $(this).parent().parent()
+    var messageId = messageDiv.attr('id')
+    $.ajax({
+      url: '<%= rooms_message_to_approves_refuse_message_url %>',
+      type: 'DELETE',
+      data: {
+        id: messageId,
+      },
+      success: messageDiv.remove()
+    })
+    
+  })
+
+  $('#messagesForApproval').on('click','button.approveMessage', function() {
+    var messageDiv = $(this).parent().parent()
+    var messageId = messageDiv.attr('id')
+    $.ajax({
+      url: '<%= rooms_approve_message_url %>',
+      type: 'POST',
+      data: {
+        id: messageId,
+      },
+      success: function(approvedMessage){
+        messageDiv.remove()
+        $('#chatFrame').append(
+          `<div class='col-12 breakText'> 
+            <b>${approvedMessage.user}:</b> ${approvedMessage.message} 
+          </div>`
+        )
+      }
+    })
+    
+  })
+
   $('#starVideoButton').on('click', function() {
-    var url = 'https://www.youtube.com/embed/' + $('#linkToVideo').val()
-    $('iframe').attr('src', url)
+    $.ajax({
+      url: '<%= rooms_update_video_url %>',
+      type: 'PUT',
+      data: {
+        id: '<%= @room.id %>',
+        videoUrl: $('#linkToVideo').val(),
+      },
+      success: function(room) {
+        var url = 'https://www.youtube.com/embed/' + room.videoUrl
+        $('iframe').attr('src', url)
+      }
+    })
   })
 </script>

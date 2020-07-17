@@ -30,12 +30,13 @@
   		if(!roomName) alert('Please, insert a room name.')
   		else {
         sessionStorage.setItem('username', username)
-        
+
   			$.ajax({
   				url: '<%= rooms_create_url %>',
   				type: 'POST',
   				data: {
             name: roomName,
+            videoUrl: '5qap5aO4i9A'
           }
   			})
   		}
