@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :room_messages
+  
 	get '/',
 		to: 'rooms#index',
 		as: :rooms_index

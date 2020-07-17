@@ -1,49 +1,119 @@
 <h1><%= @room.name %></h1>
 
-<button type="button" class="btn btn-light">
-  <%= image_tag('key.svg') %>
-  Moderation
-</button>
+<div id="fadeEffect" class="absoluteCenter"></div>
 
-<div class="input-group mb-3">
-  
-  <div class="input-group-prepend">
-    <span class="input-group-text">https://www.youtube.com/watch?v=</span>
-  </div>
-  
-  <input type="text" class="form-control" id="linkToVideo" placeholder="videocode" aria-label="Link to Video">
+<div id="setUserFrame" class="absoluteCenter popUp">
+  <h4>Insert a username</h4>
 
-  <div class="input-group-append">
-    <button class="btn btn-outline-secondary" type="button" id="starVideoButton">Start Video</button>
+  <div class="input-group flex-nowrap">
+    <input type="text" id="newUsernameInput" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
   </div>
 
+  <button id="setUsernameButton" type="button" class="btn btn-dark">Set</button>
+</div>
+
+<div id="deleteRoomFrame" class="absoluteCenter popUp hide">
+  <h4>You will delete the room. Are you sure about it?</h4>
+  <div class="row">
+    <button id="noDeleteButton" type="button" class="btn btn-success col-6">No</button>
+    <button id="yesDeleteButton" type="button" class="btn btn-light col-6">Yes</button>
+  </div>
 </div>
 
 <div class="row">
-  
-  <iframe class="col-sm-8" src="https://www.youtube.com/embed/null" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <div id="moderationFrame" class="hide">
+    <button id="deleteRoomButton" type="button" class="btn btn-danger">Delete room</button>
+    <h3>Moderation</h3>
+    <div id="messagesForApproval">
+      
+    </div>
+  </div>
 
-  <div class="col-sm-4">
-    
-    <div id="chatFrame"></div>
+  <div id="videoChatFrame" class="col-12">
+    <button id="moderationButton" type="button" class="btn btn-light">
+      <%= image_tag('key.svg') %>
+      Moderation
+    </button>
 
-    <div class="input-group mb-3">
-      <input id="messageInput" type="text" class="form-control" placeholder="Message" aria-label="Message" aria-describedby="message">
+    <div class="input-group mb-3">    
+      <div class="input-group-prepend">
+        <span class="input-group-text">https://www.youtube.com/watch?v=</span>
+      </div>
+      
+      <input type="text" class="form-control" id="linkToVideo" placeholder="videocode" aria-label="Link to Video">
+
       <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button" id="buttonSendMessage">Send</button>
+        <button class="btn btn-outline-secondary" type="button" id="starVideoButton">Start Video</button>
       </div>
     </div>
 
-  </div>
+    <div class="row">    
+      <iframe class="col-md-8" src="https://www.youtube.com/embed/null" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+      <div class="col-md-4" id="chatBox">
+        
+        <div id="chatFrame"></div>
+
+        <div class="input-group mb-3">
+          <input id="messageInput" type="text" class="form-control" placeholder="Message" aria-label="Message" aria-describedby="message">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="buttonSendMessage">Send</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 </div>
 
 <script type="text/javascript">
+  var currentUsername = sessionStorage.getItem('username')
+  if(currentUsername) {
+    $('#fadeEffect').addClass('hide')
+    $('#setUserFrame').addClass('hide')
+  }
+
+  $('#setUsernameButton').on('click', function() {
+    currentUsername = $('#newUsernameInput').val()
+    sessionStorage.setItem('username', currentUsername)
+
+    if(currentUsername) {
+      $('#fadeEffect').addClass('hide')
+      $('#setUserFrame').addClass('hide')
+    } else alert('Please, insert a username.')
+  })
+
+
+  $('#moderationButton').on('click', function() {
+    if($('#moderationFrame').hasClass('hide')){
+      $('#moderationFrame').addClass('col-md-3')
+      $('#moderationFrame').removeClass('hide')
+      $('#videoChatFrame').addClass('col-md-9')
+      $('#videoChatFrame').removeClass('col-12')
+    } else {
+      $('#moderationFrame').removeClass('col-md-3')
+      $('#moderationFrame').addClass('hide')
+      $('#videoChatFrame').removeClass('col-md-9')
+      $('#videoChatFrame').addClass('col-12')
+    }
+  })
+
+  $('#deleteRoomButton').on('click', function() {
+    $('#fadeEffect').removeClass('hide')
+    $('#deleteRoomFrame').removeClass('hide')
+  })
+
+  $('#noDeleteButton').on('click', function() {
+    $('#fadeEffect').addClass('hide')
+    $('#deleteRoomFrame').addClass('hide')
+  })
+
+
   $('#buttonSendMessage').on('click', function() {
     var textMessage = $('messageInput').val()
 
     if(!textMessage) {
-      
+
     }
   })
 

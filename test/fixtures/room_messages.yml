@@ -1,9 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  videoUrl: MyString
+  room: one
+  user: MyString
+  message: MyText
 
 two:
-  name: MyString
-  videoUrl: MyString
+  room: two
+  user: MyString
+  message: MyText

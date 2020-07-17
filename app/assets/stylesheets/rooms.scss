@@ -1,5 +1,35 @@
+#fadeEffect {
+	background-color: rgba(0,0,0,.2);
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 9998;
+}
+
+.absoluteCenter {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.popUp {
+	background-color: white;
+	z-index: 9999;
+	height: 300px;
+	width: 300px;
+}
+
 .row {
 	margin: 0 !important;
+}
+
+.hide {
+	width: 0;
+	display: none;
+}
+
+#moderationFrame {
+	border: 1px solid #ddd;
 }
 
 iframe {	
@@ -7,7 +37,12 @@ iframe {
     height: 600px;
 }
 
+#chatBox {
+	display: flex;
+	flex-direction: column;
+}
+
 #chatFrame {
-	height: 100%;
+	flex: 1;
 	border: 1px solid #ddd;
 }

@@ -21,7 +21,8 @@ class RoomsController < ApplicationController
   end
 
 	def delete
-		
+		@room.destroy
+    redirect_to 'index'
 	end
 
 	private

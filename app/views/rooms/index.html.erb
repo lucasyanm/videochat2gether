@@ -4,7 +4,7 @@
   <div class="input-group-prepend">
     <span class="input-group-text" id="addon-wrapping">@</span>
   </div>
-  <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
+  <input type="text" id="inputUsername" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
 </div>
 
 <div class="input-group input-group-lg">
@@ -21,18 +21,25 @@
 <script type="text/javascript">
 	
 	$('#createRoomButton').on('click', function () {
-		var roomName = $('#inputRoomName').val()
+    var username = $('#inputUsername').val()
 
-		if(!roomName) alert('Please insert a name')
-		else {
-			$.ajax({
-				url: '<%= rooms_create_url %>',
-				type: 'POST',
-				data: {
-          name: roomName,
-        }
-			})
-		}
+    if(!username) alert('Please, insert a username.')
+    else {
+  		var roomName = $('#inputRoomName').val()
+
+  		if(!roomName) alert('Please, insert a room name.')
+  		else {
+        sessionStorage.setItem('username', username)
+        
+  			$.ajax({
+  				url: '<%= rooms_create_url %>',
+  				type: 'POST',
+  				data: {
+            name: roomName,
+          }
+  			})
+  		}
+    }
 	})
 
 </script>
