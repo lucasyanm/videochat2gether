@@ -21,8 +21,10 @@ class RoomsController < ApplicationController
   end
 
 	def delete
-		@room.destroy
-    redirect_to 'index'
+		room = Room.find(params[:id])
+    room.destroy
+    
+    redirect_to rooms_index_url if room.destroy
 	end
 
 	private

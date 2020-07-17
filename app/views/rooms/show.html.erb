@@ -108,6 +108,16 @@
     $('#deleteRoomFrame').addClass('hide')
   })
 
+  $('#yesDeleteButton').on('click', function() {
+    $.ajax({
+      url: '<%= rooms_delete_url %>',
+      type: 'DELETE',
+      data: {
+        id: '<%= @room.id %>',
+      }
+    })
+  })
+
 
   $('#buttonSendMessage').on('click', function() {
     var textMessage = $('messageInput').val()

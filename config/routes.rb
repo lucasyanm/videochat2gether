@@ -13,5 +13,9 @@ Rails.application.routes.draw do
     to: 'rooms#show',
     as: :rooms_show
 
+  delete '/room/:name/delete',
+    to: 'rooms#delete',
+    as: :rooms_delete
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
