@@ -1,24 +1,30 @@
-# README
+# VideoChat2Gether
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+It's a simple room creator where you can chat and watch videos among your friend who join you.
 
-Things you may want to cover:
+## How to install
 
-* Ruby version
+### Linux
+1. Download the files.
+2. On the root folder, open a terminal.
+```
+$ sudo docker-compose build
+```
+3.
+```
+$ sudo docker-compose up
+```
+4.
+```
+$ sudo docker-compose run web rake db:create
+```
+5. Access the home page from http://localhost:3000/
 
-* System dependencies
+## How to use
+1. It's pretty intuitive. Just follow the forms and buttons.
+2. Everyone who has the link can enter on the room.
+3. All chats has a modders room. There someone must approve or refuse the messagens. To access the respective pages, just add /mod after the room's link.
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### Notes
+1. The nicknames are temporarily.
+2. There's no authentication to enters on the moderater's room.
