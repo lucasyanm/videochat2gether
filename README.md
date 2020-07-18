@@ -2,6 +2,8 @@
 
 It's a simple room creator where you can chat and watch videos among your friend who join you.
 
+There's a demo online: https://videochat2gether.herokuapp.com/
+
 ## How to install
 
 ### Linux
