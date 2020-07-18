@@ -132,6 +132,10 @@
               </div>`
             )
           }
+          if(newMessages.length !== 0) {
+            var chatFrame = document.querySelector('#chatFrame');
+            chatFrame.scrollTop = chatFrame.scrollHeight - chatFrame.clientHeight;
+          }
         var newMessages = []
       }
     })
