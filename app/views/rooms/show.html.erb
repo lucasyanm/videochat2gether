@@ -72,12 +72,10 @@
           for (var i = 0; i < data.messages.length; i++) {
             var lastCurrentMessage= $('#chatFrame').children().last()
 
-            if(lastCurrentMessage && parseInt(data.messages[i].id) === parseInt($('#chatFrame').children().last().attr('id'))){
+            if(lastCurrentMessage && parseInt(data.messages[i].id) === parseInt($('#chatFrame').children().last().attr('id')))
               break
-            }
-            else {
+            else 
               newMessages.push(data.messages[i])
-            }          
           }
           
           for (var i = newMessages.length - 1; i >= 0; i--) {
@@ -135,7 +133,16 @@
     }
   })
 
-  $('#buttonSendMessage').on('click', function() {
+  $('#messageInput').keydown(function(event) {
+    if (event.keyCode == 13) {
+      sendMessage()
+      return false
+    }
+  })
+
+  $('#buttonSendMessage').on('click', sendMessage)
+
+  function sendMessage() {
     var textMessage = $('#messageInput').val()
 
     if(textMessage) {
@@ -148,6 +155,8 @@
           message: textMessage
         },
       })
+
+      $('#messageInput').val('')
     }
-  })
+  }
 </script>

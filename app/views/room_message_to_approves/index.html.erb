@@ -32,26 +32,22 @@
         id: '<%= @room.id %>',
       },
       success: function(data) {
-        var newMessagesToApprove = []
+        var messagesToApprove = []
+
+        $('#messagesForApproval').html('')
         
         console.log( data )
 
           for (var i = 0; i < data.messagesToApprove.length; i++) {
             var lastCurrentMessageToApprove = $('#messagesForApproval').children().last()
-
-            if(lastCurrentMessageToApprove && parseInt(data.messagesToApprove[i].id) === parseInt($('#messagesForApproval').children().last().attr('id'))){
-              break
-            }
-            else {
-              newMessagesToApprove.push(data.messagesToApprove[i])
-            }          
+            messagesToApprove.push(data.messagesToApprove[i])     
           }
           
-          for (var i = newMessagesToApprove.length - 1; i >= 0; i--) {
+          for (var i = messagesToApprove.length - 1; i >= 0; i--) {
             $('#messagesForApproval').append(
-              `<div class='row' id='${newMessagesToApprove[i].id}'>
+              `<div class='row' id='${messagesToApprove[i].id}'>
                 <div class='col-md-10 breakText'> 
-                  <b>${newMessagesToApprove[i].user}:</b> ${newMessagesToApprove[i].message} 
+                  <b>${messagesToApprove[i].user}:</b> ${messagesToApprove[i].message} 
                 </div>
                 <div class='col-md-2'>
                   <button type="button" class="btn btn-success approveMessage"><%= image_tag('send.svg') %> </button>
@@ -60,7 +56,7 @@
               </div>`
             )
           }
-        var newMessagesToApprove = []
+        var messagesToApprove = []
       }
     })
   }, 1000)

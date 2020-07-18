@@ -4,7 +4,7 @@ default: &default
   host: db
   username: postgres
   password: password
-  pool: 5
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
@@ -14,3 +14,7 @@ development:
 test:
   <<: *default
   database: vc2gether_test
+
+production:
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
