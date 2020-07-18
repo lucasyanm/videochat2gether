@@ -11,7 +11,7 @@ class RoomsController < ApplicationController
     if room.save
       redirect_to rooms_show_url(room.name)
     else
-      render 'index'
+      render json: {}, status: :bad_request
     end
 
 	end
@@ -57,6 +57,8 @@ class RoomsController < ApplicationController
   def check_update
     room = Room.find(params[:id])
 
+    render json: {}, status: :not_found if room.nil?
+
     render json: {
       'messages': room.room_messages.order(created_at: :desc),
       'messagesToApprove': room.room_message_to_approve.order(created_at: :desc),
@@ -70,11 +72,6 @@ class RoomsController < ApplicationController
     room.save
 
     render json: room
-  end
-
-  def update_data
-    room = Room.find(params[:id])
-
   end
 
 	private

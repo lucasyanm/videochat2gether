@@ -1,6 +1,11 @@
-<h1><%= @room.name %></h1>
+<h2><%= @room.name %></h2>
 
 <div id="fadeEffect" class="absoluteCenter"></div>
+
+<div id="deletedAlert" class="absoluteCenter popUp hide">
+  <h4>This room was deleted.</h4>
+  <button id="fuckGoBack" class="btn btn-primary">Back to Home</button>
+</div>
 
 <div id="setUserFrame" class="absoluteCenter popUp">
   <h4>Insert a username</h4>
@@ -12,30 +17,8 @@
   <button id="setUsernameButton" type="button" class="btn btn-dark">Set</button>
 </div>
 
-<div id="deleteRoomFrame" class="absoluteCenter popUp hide">
-  <h4>You will delete the room. Are you sure about it?</h4>
-  <div class="row">
-    <button id="noDeleteButton" type="button" class="btn btn-success col-6">No</button>
-    <button id="yesDeleteButton" type="button" class="btn btn-light col-6">Yes</button>
-  </div>
-</div>
-
 <div class="row">
-  <div id="moderateFrame" class="hide">
-    <button id="deleteRoomButton" type="button" class="btn btn-danger">Delete room</button>
-    <h3>Moderate</h3>
-
-    <div id="messagesForApproval" class="overflow-auto">
-      
-    </div>
-  </div>
-
   <div id="videoChatFrame" class="col-12">
-    <button id="moderateButton" type="button" class="btn btn-light">
-      <%= image_tag('key.svg') %>
-      Moderate
-    </button>
-
     <div class="input-group mb-3">    
       <div class="input-group-prepend">
         <span class="input-group-text">https://www.youtube.com/watch?v=</span>
@@ -85,34 +68,6 @@
           $('iframe').attr('src', url)
         }
 
-
-        var newMessagesToApprove = []
-          for (var i = 0; i < data.messagesToApprove.length; i++) {
-            var lastCurrentMessageToApprove = $('#messagesForApproval').children().last()
-
-            if(lastCurrentMessageToApprove && parseInt(data.messagesToApprove[i].id) === parseInt($('#messagesForApproval').children().last().attr('id'))){
-              break
-            }
-            else {
-              newMessagesToApprove.push(data.messagesToApprove[i])
-            }          
-          }
-          
-          for (var i = newMessagesToApprove.length - 1; i >= 0; i--) {
-            $('#messagesForApproval').append(
-              `<div class='row' id='${newMessagesToApprove[i].id}'>
-                <div class='col-md-8 breakText'> 
-                  <b>${newMessagesToApprove[i].user}:</b> ${newMessagesToApprove[i].message} 
-                </div>
-                <div class='col-md-4'>
-                  <button type="button" class="btn btn-success approveMessage"><%= image_tag('send.svg') %> </button>
-                  <button type="button" class="btn btn-danger deleteMessage"><%= image_tag('x.svg') %></button>
-                </div>
-              </div>`
-            )
-          }
-        var newMessagesToApprove = []
-
         var newMessages = []
           for (var i = 0; i < data.messages.length; i++) {
             var lastCurrentMessage= $('#chatFrame').children().last()
@@ -137,6 +92,16 @@
             chatFrame.scrollTop = chatFrame.scrollHeight - chatFrame.clientHeight;
           }
         var newMessages = []
+      },
+      error: function(data) {
+        if(data.status == 404){
+          $('#fadeEffect').removeClass('hide')
+          $('#deletedAlert').removeClass('hide')
+
+          $('#fuckGoBack').on('click', function(){
+            window.location.href = '<%= rooms_index_url %>'
+          })
+        }
       }
     })
   }, 1000)
@@ -157,7 +122,6 @@
     } else alert('Please, insert a username.')
   })
 
-
   $('#startVideoButton').on('click', function() {
     if($('#linkToVideo').val()){
       $.ajax({
@@ -170,41 +134,6 @@
       })
     }
   })
-
-  $('#moderateButton').on('click', function() {
-    if($('#moderateFrame').hasClass('hide')){
-      $('#moderateFrame').addClass('col-md-3')
-      $('#moderateFrame').removeClass('hide')
-      $('#videoChatFrame').addClass('col-md-9')
-      $('#videoChatFrame').removeClass('col-12')
-    } else {
-      $('#moderateFrame').removeClass('col-md-3')
-      $('#moderateFrame').addClass('hide')
-      $('#videoChatFrame').removeClass('col-md-9')
-      $('#videoChatFrame').addClass('col-12')
-    }
-  })
-
-  $('#deleteRoomButton').on('click', function() {
-    $('#fadeEffect').removeClass('hide')
-    $('#deleteRoomFrame').removeClass('hide')
-  })
-
-  $('#noDeleteButton').on('click', function() {
-    $('#fadeEffect').addClass('hide')
-    $('#deleteRoomFrame').addClass('hide')
-  })
-
-  $('#yesDeleteButton').on('click', function() {
-    $.ajax({
-      url: '<%= rooms_delete_url %>',
-      type: 'DELETE',
-      data: {
-        id: '<%= @room.id %>',
-      }
-    })
-  })
-
 
   $('#buttonSendMessage').on('click', function() {
     var textMessage = $('#messageInput').val()
@@ -220,34 +149,5 @@
         },
       })
     }
-  })
-
-  $('#messagesForApproval').on('click','button.deleteMessage', function() {
-    var messageDiv = $(this).parent().parent()
-    var messageId = messageDiv.attr('id')
-    $.ajax({
-      url: '<%= rooms_message_to_approves_refuse_message_url %>',
-      type: 'DELETE',
-      data: {
-        id: messageId,
-      },
-      success: messageDiv.remove()
-    })
-    
-  })
-
-  $('#messagesForApproval').on('click','button.approveMessage', function() {
-    var messageDiv = $(this).parent().parent()
-    var messageId = messageDiv.attr('id')
-    $.ajax({
-      url: '<%= rooms_approve_message_url %>',
-      type: 'POST',
-      data: {
-        id: messageId,
-      },
-      success: messageDiv.remove()
-      
-    })
-    
   })
 </script>

@@ -1,20 +1,22 @@
-<h2>Create a Room!</h2>
+<div class="container" id="createRoomFrame">
+  <h2 id="createRoomTitle">Create a Room!</h2>
 
-<div class="input-group flex-nowrap">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="addon-wrapping">@</span>
+  <div id="usernameInputFrame" class="input-group flex-nowrap">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="addon-wrapping">@</span>
+    </div>
+    <input type="text" id="inputUsername" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
   </div>
-  <input type="text" id="inputUsername" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
-</div>
 
-<div class="input-group input-group-lg">
-  <div class="input-group-prepend">
-    <span class="input-group-text">Room Name</span>
+  <div id="roomNameInputFrame" class="input-group input-group-lg">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Room Name</span>
+    </div>
+    <input type="text" id="inputRoomName" class="form-control" aria-label="Room Name" aria-describedby="inputGroup-sizing-lg">
   </div>
-  <input type="text" id="inputRoomName" class="form-control" aria-label="Room Name" aria-describedby="inputGroup-sizing-lg">
-</div>
 
-<button id="createRoomButton" class="btn btn-secondary">Create</button>
+  <button id="createRoomButton" class="btn btn-secondary">Create</button>
+</div>
 
 
 
@@ -37,6 +39,9 @@
   				data: {
             name: roomName,
             videoUrl: '5qap5aO4i9A'
+          },
+          error: function(data){
+            alert("Room's name must be unique.")
           }
   			})
   		}

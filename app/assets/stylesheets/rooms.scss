@@ -14,9 +14,15 @@
 
 .popUp {
 	background-color: white;
-	z-index: 9999;
-	height: 300px;
-	width: 300px;
+  z-index: 9999;
+  height: 300px;
+  width: 300px;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .row {

@@ -3,3 +3,42 @@
 *= require_self
 */
 @import "bootstrap";
+
+body {
+  padding: 30px;
+}
+
+h1, h2 {
+  font-family: 'Raleway', sans-serif;
+}
+h2 {
+  font-weight: bold;
+}
+
+#createRoomFrame {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  max-width: 600px;
+  box-shadow: 2px 2px 5px rgba(0,0,0,.2);
+  border-radius: 10px;
+}
+
+#createRoomTitle {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+#usernameInputFrame, #roomNameInputFrame {
+  max-width: 300px;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+#roomNameInputFrame {
+  max-width: 500px;
+}
+
+#createRoomButton {
+  margin: auto;
+}

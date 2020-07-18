@@ -1,0 +1,114 @@
+<h2><%= @room.name %> - Moderator's room</h2>
+
+<div id="fadeEffect" class="absoluteCenter hide"></div>
+
+<div id="deleteRoomFrame" class="absoluteCenter popUp hide">
+  <h4>You will delete the room. Are you sure about it?</h4>
+  <div class="row" id="deleteOptionFrame">
+    <button id="noDeleteButton" type="button" class="btn btn-success col-5">No</button>
+    <button id="yesDeleteButton" type="button" class="btn btn-light col-5">Yes</button>
+  </div>
+</div>
+
+
+<div class="container">
+  <div id="moderateFrame">
+    <button id="deleteRoomButton" type="button" class="btn btn-danger">Delete room</button>
+    <h3>Moderate Messages</h3>
+
+    <div id="messagesForApproval" class="overflow-auto">
+        
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  <!-- updating the frontend -->
+  setInterval(function(){
+    $.ajax({
+      url: '<%= rooms_check_update_url %>',
+      type: 'GET',
+      data: {
+        id: '<%= @room.id %>',
+      },
+      success: function(data) {
+        var newMessagesToApprove = []
+        
+        console.log( data )
+
+          for (var i = 0; i < data.messagesToApprove.length; i++) {
+            var lastCurrentMessageToApprove = $('#messagesForApproval').children().last()
+
+            if(lastCurrentMessageToApprove && parseInt(data.messagesToApprove[i].id) === parseInt($('#messagesForApproval').children().last().attr('id'))){
+              break
+            }
+            else {
+              newMessagesToApprove.push(data.messagesToApprove[i])
+            }          
+          }
+          
+          for (var i = newMessagesToApprove.length - 1; i >= 0; i--) {
+            $('#messagesForApproval').append(
+              `<div class='row' id='${newMessagesToApprove[i].id}'>
+                <div class='col-md-10 breakText'> 
+                  <b>${newMessagesToApprove[i].user}:</b> ${newMessagesToApprove[i].message} 
+                </div>
+                <div class='col-md-2'>
+                  <button type="button" class="btn btn-success approveMessage"><%= image_tag('send.svg') %> </button>
+                  <button type="button" class="btn btn-danger deleteMessage"><%= image_tag('x.svg') %></button>
+                </div>
+              </div>`
+            )
+          }
+        var newMessagesToApprove = []
+      }
+    })
+  }, 1000)
+
+  $('#deleteRoomButton').on('click', function() {
+    $('#fadeEffect').removeClass('hide')
+    $('#deleteRoomFrame').removeClass('hide')
+  })
+
+  $('#noDeleteButton').on('click', function() {
+    $('#fadeEffect').addClass('hide')
+    $('#deleteRoomFrame').addClass('hide')
+  })
+
+  $('#yesDeleteButton').on('click', function() {
+    $.ajax({
+      url: '<%= rooms_delete_url %>',
+      type: 'DELETE',
+      data: {
+        id: '<%= @room.id %>',
+      }
+    })
+  })
+
+  $('#messagesForApproval').on('click','button.deleteMessage', function() {
+    var messageDiv = $(this).parent().parent()
+    var messageId = messageDiv.attr('id')
+    $.ajax({
+      url: '<%= rooms_message_to_approves_refuse_message_url %>',
+      type: 'DELETE',
+      data: {
+        id: messageId,
+      },
+      success: messageDiv.remove()
+    })    
+  })
+
+  $('#messagesForApproval').on('click','button.approveMessage', function() {
+    var messageDiv = $(this).parent().parent()
+    var messageId = messageDiv.attr('id')
+    $.ajax({
+      url: '<%= rooms_approve_message_url %>',
+      type: 'POST',
+      data: {
+        id: messageId,
+      },
+      success: messageDiv.remove()
+      
+    })    
+  })
+</script>
