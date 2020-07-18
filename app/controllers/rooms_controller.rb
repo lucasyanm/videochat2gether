@@ -49,8 +49,19 @@ class RoomsController < ApplicationController
     message.message = approvedMessage.message
 
     message.save
+    approvedMessage.destroy
 
     render json: message
+  end
+
+  def check_update
+    room = Room.find(params[:id])
+
+    render json: {
+      'messages': room.room_messages.order(created_at: :desc),
+      'messagesToApprove': room.room_message_to_approve.order(created_at: :desc),
+      'videoUrl': room.videoUrl
+    }
   end
 
   def update_video

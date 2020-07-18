@@ -44,7 +44,7 @@
       <input type="text" class="form-control" id="linkToVideo" placeholder="videocode" aria-label="Link to Video">
 
       <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button" id="starVideoButton">Start Video</button>
+        <button class="btn btn-outline-secondary" type="button" id="startVideoButton">Start Video</button>
       </div>
     </div>
 
@@ -70,8 +70,72 @@
 </div>
 
 <script type="text/javascript">
-  var url = 'https://www.youtube.com/embed/' + '<%= @room.videoUrl %>'
-  $('iframe').attr('src', url)
+  <!-- updating the frontend -->
+  setInterval(function(){
+    $.ajax({
+      url: '<%= rooms_check_update_url %>',
+      type: 'GET',
+      data: {
+        id: '<%= @room.id %>',
+      },
+      success: function(data) {
+        var videoCode = $('iframe').attr('src').substring(30,)
+        if(data.videoUrl !== videoCode) {
+          var url = 'https://www.youtube.com/embed/' + data.videoUrl
+          $('iframe').attr('src', url)
+        }
+
+
+        var newMessagesToApprove = []
+          for (var i = 0; i < data.messagesToApprove.length; i++) {
+            var lastCurrentMessageToApprove = $('#messagesForApproval').children().last()
+
+            if(lastCurrentMessageToApprove && parseInt(data.messagesToApprove[i].id) === parseInt($('#messagesForApproval').children().last().attr('id'))){
+              break
+            }
+            else {
+              newMessagesToApprove.push(data.messagesToApprove[i])
+            }          
+          }
+          
+          for (var i = newMessagesToApprove.length - 1; i >= 0; i--) {
+            $('#messagesForApproval').append(
+              `<div class='row' id='${newMessagesToApprove[i].id}'>
+                <div class='col-md-8 breakText'> 
+                  <b>${newMessagesToApprove[i].user}:</b> ${newMessagesToApprove[i].message} 
+                </div>
+                <div class='col-md-4'>
+                  <button type="button" class="btn btn-success approveMessage"><%= image_tag('send.svg') %> </button>
+                  <button type="button" class="btn btn-danger deleteMessage"><%= image_tag('x.svg') %></button>
+                </div>
+              </div>`
+            )
+          }
+        var newMessagesToApprove = []
+
+        var newMessages = []
+          for (var i = 0; i < data.messages.length; i++) {
+            var lastCurrentMessage= $('#chatFrame').children().last()
+
+            if(lastCurrentMessage && parseInt(data.messages[i].id) === parseInt($('#chatFrame').children().last().attr('id'))){
+              break
+            }
+            else {
+              newMessages.push(data.messages[i])
+            }          
+          }
+          
+          for (var i = newMessages.length - 1; i >= 0; i--) {
+            $('#chatFrame').append(
+              `<div class='col-12 breakText' id='${newMessages[i].id}'> 
+                <b>${newMessages[i].user}:</b> ${newMessages[i].message} 
+              </div>`
+            )
+          }
+        var newMessages = []
+      }
+    })
+  }, 1000)
 
   var currentUsername = sessionStorage.getItem('username')
   if(currentUsername) {
@@ -89,6 +153,19 @@
     } else alert('Please, insert a username.')
   })
 
+
+  $('#startVideoButton').on('click', function() {
+    if($('#linkToVideo').val()){
+      $.ajax({
+        url: '<%= rooms_update_video_url %>',
+        type: 'PUT',
+        data: {
+          id: '<%= @room.id %>',
+          videoUrl: $('#linkToVideo').val(),
+        }
+      })
+    }
+  })
 
   $('#moderateButton').on('click', function() {
     if($('#moderateFrame').hasClass('hide')){
@@ -137,19 +214,6 @@
           user: sessionStorage.getItem('username'),
           message: textMessage
         },
-        success: function(messageToApprove) {
-          $('#messagesForApproval').append(
-            `<div class='row' id='${messageToApprove.id}'>
-              <div class='col-md-8 breakText'> 
-                <b>${messageToApprove.user}:</b> ${messageToApprove.message} 
-              </div>
-              <div class='col-md-4'>
-                <button type="button" class="btn btn-success approveMessage"><%= image_tag('send.svg') %> </button>
-                <button type="button" class="btn btn-danger deleteMessage"><%= image_tag('x.svg') %></button>
-              </div>
-            </div>`
-            )
-        }
       })
     }
   })
@@ -177,30 +241,9 @@
       data: {
         id: messageId,
       },
-      success: function(approvedMessage){
-        messageDiv.remove()
-        $('#chatFrame').append(
-          `<div class='col-12 breakText'> 
-            <b>${approvedMessage.user}:</b> ${approvedMessage.message} 
-          </div>`
-        )
-      }
+      success: messageDiv.remove()
+      
     })
     
-  })
-
-  $('#starVideoButton').on('click', function() {
-    $.ajax({
-      url: '<%= rooms_update_video_url %>',
-      type: 'PUT',
-      data: {
-        id: '<%= @room.id %>',
-        videoUrl: $('#linkToVideo').val(),
-      },
-      success: function(room) {
-        var url = 'https://www.youtube.com/embed/' + room.videoUrl
-        $('iframe').attr('src', url)
-      }
-    })
   })
 </script>

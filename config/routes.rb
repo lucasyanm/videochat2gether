@@ -1,7 +1,4 @@
-Rails.application.routes.draw do
-  resources :room_message_to_approves
-  resources :room_messages
-  
+Rails.application.routes.draw do  
 	get '/',
 		to: 'rooms#index',
 		as: :rooms_index
@@ -13,6 +10,10 @@ Rails.application.routes.draw do
   get '/room/:name',
     to: 'rooms#show',
     as: :rooms_show
+
+  get '/room/:name/checkupdate',
+    to: 'rooms#check_update',
+    as: :rooms_check_update
 
   delete '/room/:name/delete',
     to: 'rooms#delete',
