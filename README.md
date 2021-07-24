@@ -20,7 +20,15 @@ $ sudo docker-compose up
 ```
 $ sudo docker-compose run web rake db:create
 ```
-5. Access the home page from http://localhost:3000/
+5.
+```
+$ sudo docker-compose run web db:migrate
+```
+6.
+```
+$ sudo docker-compose run web rails server
+```
+7. Access the home page from http://localhost:3000/
 
 ## How to use
 1. It's pretty intuitive. Just follow the forms and buttons.
