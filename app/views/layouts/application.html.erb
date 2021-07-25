@@ -11,13 +11,18 @@
     
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-
+    
+    <script src="https://kit.fontawesome.com/426eb9402a.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Raleway:wght@300&family=Ranchers&display=swap" rel="stylesheet">
   </head>
 
   <body>
     <h1>
-      <a href="/">VideoChat2Gether</a>
+      <a href="/">
+        <i class="fas fa-play-circle"
+           style="margin-right: 5px;"></i>
+        VideoChat2Gether
+      </a>
     </h1>
     <%= yield %>
   </body>
