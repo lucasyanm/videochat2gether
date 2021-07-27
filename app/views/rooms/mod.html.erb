@@ -85,7 +85,7 @@
     var messageDiv = $(this).parent().parent()
     var messageId = messageDiv.attr('id')
     $.ajax({
-      url: '<%= rooms_message_to_approves_refuse_message_url %>',
+      url: '<%= room_messages_refuse_message_url %>',
       type: 'DELETE',
       data: {
         id: messageId,
@@ -98,7 +98,7 @@
     var messageDiv = $(this).parent().parent()
     var messageId = messageDiv.attr('id')
     $.ajax({
-      url: '<%= rooms_approve_message_url %>',
+      url: '<%= room_messages_approve_message_url %>',
       type: 'POST',
       data: {
         id: messageId,

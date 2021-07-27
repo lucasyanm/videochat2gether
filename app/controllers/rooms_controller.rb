@@ -27,41 +27,18 @@ class RoomsController < ApplicationController
     redirect_to rooms_index_url if room.destroy
 	end
 
-  def send_message
-    room = Room.find(params[:id])
-
-    messageToApprove = RoomMessageToApprove.new
-    messageToApprove.room = room
-    messageToApprove.user = params[:user]
-    messageToApprove.message = params[:message]
-
-    messageToApprove.save
-
-    render json: messageToApprove
-  end
-
-  def approve_message
-    approvedMessage = RoomMessageToApprove.find(params[:id])
-
-    message = RoomMessage.new()
-    message.room = approvedMessage.room
-    message.user = approvedMessage.user
-    message.message = approvedMessage.message
-
-    message.save
-    approvedMessage.destroy
-
-    render json: message
-  end
-
   def check_update
     room = Room.find(params[:id])
 
     render json: {}, status: :not_found if room.nil?
 
     render json: {
-      'messages': room.room_messages.order(created_at: :desc),
-      'messagesToApprove': room.room_message_to_approve.order(created_at: :desc),
+      'messages': room.room_messages
+                  .where(approved: true)
+                  .order(created_at: :desc),
+      'messagesToApprove': room.room_messages
+                           .where(pending_to_approve: true) 
+                           .order(created_at: :desc),
       'videoUrl': room.videoUrl
     }
   end
@@ -72,6 +49,10 @@ class RoomsController < ApplicationController
     room.save
 
     render json: room
+  end
+
+  def mod
+    @room = Room.find_by(name: params[:name])
   end
 
 	private

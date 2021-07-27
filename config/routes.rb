@@ -12,8 +12,8 @@ Rails.application.routes.draw do
     as: :rooms_show
 
   get '/room/:name/mod',
-    to: 'room_message_to_approves#index',
-    as: :rooms_message_to_approves_index
+    to: 'rooms#mod',
+    as: :rooms_mod
 
   get '/room/:name/checkupdate',
     to: 'rooms#check_update',
@@ -23,21 +23,21 @@ Rails.application.routes.draw do
     to: 'rooms#delete',
     as: :rooms_delete
 
-  post '/rooom/sendmessage',
-    to: 'rooms#send_message',
-    as: :rooms_send_message
-
-  delete '/room/:name/refusemessage',
-    to: 'room_message_to_approves#refuse_message',
-    as: :rooms_message_to_approves_refuse_message
-
-  post '/room/:name/approvemessage',
-    to: 'rooms#approve_message',
-    as: :rooms_approve_message
-
   put '/room/:name/upvideo',
     to: 'rooms#update_video',
     as: :rooms_update_video
+    
+  post '/room/sendmessage',
+    to: 'room_messages#send_message',
+    as: :room_messages_send_message
+
+  delete '/room/:name/refusemessage',
+    to: 'room_messages#refuse_message',
+    as: :room_messages_refuse_message
+
+  post '/room/:name/approvemessage',
+    to: 'room_messages#approve_message',
+    as: :room_messages_approve_message
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

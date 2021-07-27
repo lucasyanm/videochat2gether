@@ -147,7 +147,7 @@
 
     if(textMessage) {
       $.ajax({
-        url: '<%= rooms_send_message_url %>',
+        url: '<%= room_messages_send_message_url %>',
         type: 'POST',
         data: {
           id: '<%= @room.id %>',
