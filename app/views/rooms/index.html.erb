@@ -19,8 +19,19 @@
 </div>
 
 
+<div id="teste">
+  <span>{{ teste }}</span>
+</div>
+
 
 <script type="text/javascript">
+
+  var app = new Vue({
+    el: "#teste",
+    data: {
+      teste: "testando som"
+    }
+  });
 	
 	$('#createRoomButton').on('click', function () {
     var username = $('#inputUsername').val()
