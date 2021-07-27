@@ -1,0 +1,10 @@
+@import "./variables.scss";
+
+.btn-primary {
+    background-color: $secondary-color;
+    border-color: $secondary-color;
+}
+.btn-primary:hover {
+    background-color: $secondary-color-darker;
+    border-color: $secondary-color-darker;
+}

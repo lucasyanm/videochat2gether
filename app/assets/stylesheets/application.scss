@@ -3,6 +3,7 @@
 *= require_self
 */
 @import "bootstrap";
+@import "./variables.scss";
 
 body {
   padding: 30px;
@@ -19,30 +20,37 @@ h2 {
   font-weight: bold;
 }
 
+header {
+  border-bottom: 1px solid $main-color;
+
+  a {
+    color: $main-color;
+  }
+  a:hover {
+    color: $main-color;
+  }
+}
+
 #createRoomFrame {
   display: flex;
   flex-direction: column;
   padding: 20px;
-  max-width: 600px;
+  max-width: 400px;
   box-shadow: 2px 2px 5px rgba(0,0,0,.2);
   border-radius: 10px;
-}
 
-#createRoomTitle {
-  text-align: center;
-  margin-bottom: 50px;
-}
+  h2 {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  
+  #usernameInputFrame, #roomNameInputFrame {
+    width: 100%;
+    margin: auto;
+    margin-bottom: 20px;
+  }
 
-#usernameInputFrame, #roomNameInputFrame {
-  max-width: 300px;
-  margin: auto;
-  margin-bottom: 20px;
-}
-
-#roomNameInputFrame {
-  max-width: 500px;
-}
-
-#createRoomButton {
-  margin: auto;
+  button {
+    margin: auto;
+  }
 }

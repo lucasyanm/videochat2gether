@@ -10,6 +10,7 @@
     <% end %>
     
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'bootstrap_modifications', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     
     <script src="https://kit.fontawesome.com/426eb9402a.js" crossorigin="anonymous"></script>
@@ -17,13 +18,18 @@
   </head>
 
   <body>
-    <h1>
-      <a href="/">
-        <i class="fas fa-play-circle"
-           style="margin-right: 5px;"></i>
-        VideoChat2Gether
-      </a>
-    </h1>
-    <%= yield %>
+    <header class="mb-3">
+      <h1>
+        <a href="/">
+          <i class="fas fa-play-circle"
+            style="margin-right: 5px;"></i>
+          VideoChat2Gether
+        </a>
+      </h1>
+    </header>
+
+    <div>
+      <%= yield %>
+    </div>
   </body>
 </html>
